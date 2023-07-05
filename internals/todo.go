@@ -131,7 +131,7 @@ func (t *Todos) Load(filename string) error {
 		return err
 	}
 
-	file, err := ioutil.ReadFile(dirname+filename)
+	file, err := ioutil.ReadFile(dirname+"/Documents/"+filename)
 	if err != nil {
 		return err
 	}
