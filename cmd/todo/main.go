@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"os"
 
 	todo "github.com/wbabcock/todo-cli/internals"
 )
@@ -27,38 +29,45 @@ func main() {
 
 	todos := &todo.Todos{}
 	if err := todos.Load(todoFile); err != nil {
-		panic(err)
+		fmt.Println(err.Error())
+		os.Exit(1)
 	}
 
 	switch {
 	case *add || *a:
 		if len(flag.Args()) < 1 {
-			panic("Missing task")
+			fmt.Println("Missing task")
+			os.Exit(0)
 		}
 		todos.Add(*&flag.Args()[0])
 	case *complete > 0:
 		if err := todos.Complete(*complete); err != nil {
-			panic(err)
+			fmt.Println(err.Error())
+			os.Exit(1)
 		}
 	case *c > 0:
 		if err := todos.Complete(*c); err != nil {
-			panic(err)
+			fmt.Println(err.Error())
+			os.Exit(1)
 		}
 	case *remove > 0:
 		if err := todos.Delete(*remove); err != nil {
-			panic(err)
+			fmt.Println(err.Error())
+			os.Exit(1)
 		}
 	case *r > 0:
 		if err := todos.Delete(*r); err != nil {
-			panic(err)
+			fmt.Println(err.Error())
+			os.Exit(1)
 		}
 	case *list || *l:
 		todos.List()
 	default:
-		panic("Invalid option")
+		todos.List()
 	}
 
 	if err := todos.Save(todoFile); err != nil {
-		panic(err)
+		fmt.Println("Error saving todos")
+		os.Exit(1)
 	}
 }
